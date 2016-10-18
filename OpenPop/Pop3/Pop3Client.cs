@@ -32,6 +32,11 @@ namespace OpenPop.Pop3
 		private Stream Stream { get; set; }
 
 		/// <summary>
+		/// Connected host
+		/// </summary>
+		private string Hostname { get; set; }
+
+		/// <summary>
 		/// This is the last response the server sent back when a command was issued to it
 		/// </summary>
 		private string LastServerResponse { get; set; }
@@ -198,6 +203,7 @@ namespace OpenPop.Pop3
 			TcpClient clientSocket = new TcpClient();
 			clientSocket.ReceiveTimeout = receiveTimeout;
 			clientSocket.SendTimeout = sendTimeout;
+			Hostname = hostname;
 
 			try
 			{
@@ -1131,6 +1137,33 @@ namespace OpenPop.Pop3
 			{
 				throw new LoginDelayException(e);
 			}
+		}
+		#endregion
+
+		#region StartTLS method
+		/// <summary>
+		/// Enable secure communication with STARTTLS
+		/// </summary>
+		/// <param name="certificateValidator">If you want to validate the certificate in a SSL/TLS connection, pass a reference to your validator. <see langword="null"/> if the default value.</param>
+		public void STARTTLS(RemoteCertificateValidationCallback certificateValidator = null)
+		{
+			SslStream sslStream;
+
+			if (certificateValidator == null)
+			{
+				sslStream = new SslStream(Stream, false);
+			}
+			else
+			{
+				sslStream = new SslStream(Stream, false, certificateValidator);
+			}
+
+			sslStream.ReadTimeout = Stream.ReadTimeout;
+			sslStream.WriteTimeout = Stream.WriteTimeout;
+
+			SendCommand("STLS");
+			sslStream.AuthenticateAsClient(Hostname);
+			Stream = sslStream;
 		}
 		#endregion
 	}
