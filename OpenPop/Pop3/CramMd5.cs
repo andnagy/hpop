@@ -55,13 +55,13 @@ namespace OpenPop.Pop3
 		/// </exception>
 		internal static string ComputeDigest(string username, string password, string challenge)
 		{
-			if(username == null)
+			if (username == null)
 				throw new ArgumentNullException("username");
-			
-			if(password == null)
+
+			if (password == null)
 				throw new ArgumentNullException("password");
 
-			if(challenge == null)
+			if (challenge == null)
 				throw new ArgumentNullException("challenge");
 
 			// Get the password bytes
@@ -94,7 +94,7 @@ namespace OpenPop.Pop3
 		/// <exception cref="ArgumentNullException">If <paramref name="toHash"/> is <see langword="null"/></exception>
 		private static byte[] Hash(byte[] toHash)
 		{
-			if(toHash == null)
+			if (toHash == null)
 				throw new ArgumentNullException("toHash");
 
 			using (MD5 md5 = new MD5CryptoServiceProvider())
@@ -112,10 +112,10 @@ namespace OpenPop.Pop3
 		/// <exception cref="ArgumentNullException">If <paramref name="one"/> or <paramref name="two"/> is <see langword="null"/></exception>
 		private static byte[] Concatenate(byte[] one, byte[] two)
 		{
-			if(one == null)
+			if (one == null)
 				throw new ArgumentNullException("one");
 
-			if(two == null)
+			if (two == null)
 				throw new ArgumentNullException("two");
 
 			// Create space for both byte arrays in one
@@ -143,20 +143,20 @@ namespace OpenPop.Pop3
 		/// <exception cref="ArgumentException">If the lengths of the arrays are not equal</exception>
 		private static byte[] Xor(byte[] toXor, byte[] toXorWith)
 		{
-			if(toXor == null)
+			if (toXor == null)
 				throw new ArgumentNullException("toXor");
 
-			if(toXorWith == null)
+			if (toXorWith == null)
 				throw new ArgumentNullException("toXorWith");
 
-			if(toXor.Length != toXorWith.Length)
+			if (toXor.Length != toXorWith.Length)
 				throw new ArgumentException("The lengths of the arrays must be equal");
 
 			// Create a new array to store results in
 			byte[] xored = new byte[toXor.Length];
 
 			// XOR each individual byte.
-			for(int i = 0; i<toXor.Length; i++)
+			for (int i = 0; i < toXor.Length; i++)
 			{
 				xored[i] = toXor[i];
 				xored[i] ^= toXorWith[i];
@@ -180,7 +180,7 @@ namespace OpenPop.Pop3
 		/// <exception cref="ArgumentNullException">If <paramref name="password"/> is <see langword="null"/></exception>
 		private static byte[] GetSharedSecretInBytes(string password)
 		{
-			if(password == null)
+			if (password == null)
 				throw new ArgumentNullException("password");
 
 			// Get the password in bytes
@@ -191,11 +191,11 @@ namespace OpenPop.Pop3
 			{
 				passwordBytes = new MD5CryptoServiceProvider().ComputeHash(passwordBytes);
 			}
-			
-			if(passwordBytes.Length != 64)
+
+			if (passwordBytes.Length != 64)
 			{
 				byte[] returner = new byte[64];
-				for(int i = 0; i<passwordBytes.Length; i++)
+				for (int i = 0; i < passwordBytes.Length; i++)
 				{
 					returner[i] = passwordBytes[i];
 				}

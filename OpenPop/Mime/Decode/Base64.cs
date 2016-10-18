@@ -1,8 +1,8 @@
-﻿using System;
+﻿using OpenPop.Common.Logging;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using OpenPop.Common.Logging;
 
 namespace OpenPop.Mime.Decode
 {
@@ -55,7 +55,8 @@ namespace OpenPop.Mime.Decode
 
 					return memoryStream.ToArray();
 				}
-			} catch (FormatException e)
+			}
+			catch (FormatException e)
 			{
 				DefaultLogger.Log.LogError("Base64: (FormatException) " + e.Message + "\r\nOn string: " + base64Encoded);
 				throw;
@@ -72,10 +73,10 @@ namespace OpenPop.Mime.Decode
 		/// <exception cref="FormatException">If <paramref name="base64Encoded"/> is not a valid base64 encoded string</exception>
 		public static string Decode(string base64Encoded, Encoding encoding)
 		{
-			if(base64Encoded == null)
+			if (base64Encoded == null)
 				throw new ArgumentNullException("base64Encoded");
 
-			if(encoding == null)
+			if (encoding == null)
 				throw new ArgumentNullException("encoding");
 
 			return encoding.GetString(Decode(base64Encoded));

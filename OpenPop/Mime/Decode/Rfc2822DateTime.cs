@@ -1,7 +1,7 @@
-﻿using System;
+﻿using OpenPop.Common.Logging;
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using OpenPop.Common.Logging;
 
 namespace OpenPop.Mime.Decode
 {
@@ -33,7 +33,7 @@ namespace OpenPop.Mime.Decode
 		/// <exception cref="ArgumentException">If the <paramref name="inputDate"/> could not be parsed into a <see cref="DateTime"/> object</exception>
 		public static DateTime StringToDate(string inputDate)
 		{
-			if(inputDate == null)
+			if (inputDate == null)
 				throw new ArgumentNullException("inputDate");
 
 			// Handle very wrong date time format: Tue Feb 18 10:23:30 2014 (MSK)
@@ -59,11 +59,11 @@ namespace OpenPop.Mime.Decode
 
 				// Adjust according to the time zone
 				dateTime = AdjustTimezone(dateTime, inputDate);
-				
+
 				// Return the parsed date
 				return dateTime;
 			}
-			catch (FormatException e)	// Convert.ToDateTime() Failure
+			catch (FormatException e)   // Convert.ToDateTime() Failure
 			{
 				throw new ArgumentException("Could not parse date: " + e.Message + ". Input was: \"" + inputDate + "\"", e);
 			}
@@ -101,8 +101,8 @@ namespace OpenPop.Mime.Decode
 
 				int factor = match.Value[0] == '+' ? -1 : 1;
 
-				dateTime = dateTime.AddHours(factor*hours);
-				dateTime = dateTime.AddMinutes(factor*minutes);
+				dateTime = dateTime.AddHours(factor * hours);
+				dateTime = dateTime.AddMinutes(factor * minutes);
 
 				return dateTime;
 			}
@@ -227,7 +227,7 @@ namespace OpenPop.Mime.Decode
 					DefaultLogger.Log.LogDebug(String.Format("Successfully parsed date input \"{0}\" using a custom format. Converted to date: {1}", dateInput, dateTime.ToString()));
 					return dateTime;
 				}
-				catch (FormatException) {  }
+				catch (FormatException) { }
 			}
 
 			// Matches the date and time part of a string
@@ -301,7 +301,7 @@ namespace OpenPop.Mime.Decode
 					(dateTime.DayOfWeek == DayOfWeek.Saturday	&& !dayName.Equals("Sat")) ||
 					(dateTime.DayOfWeek == DayOfWeek.Sunday		&& !dayName.Equals("Sun")))
 				{
-					DefaultLogger.Log.LogDebug("Day-name does not correspond to the weekday of the date: " + dateInput);					
+					DefaultLogger.Log.LogDebug("Day-name does not correspond to the weekday of the date: " + dateInput);
 				}
 			}
 
@@ -316,7 +316,7 @@ namespace OpenPop.Mime.Decode
 		/// <exception cref="ArgumentNullException">If <paramref name="input"/> is <see langword="null"/></exception>
 		private static string StripCommentsAndExcessWhitespace(string input)
 		{
-			if(input == null)
+			if (input == null)
 				throw new ArgumentNullException("input");
 
 			// Strip out comments
@@ -359,7 +359,7 @@ namespace OpenPop.Mime.Decode
 			string incorrectFormat = String.Format(@"{0} +{1} +{2} +{3} +{4} +\({5}\)", weekDayPattern, monthPattern, dayPattern, timePattern, yearPattern, timeZonePattern);
 
 			Match match = Regex.Match(inputDate, incorrectFormat);
-			if(match.Success)
+			if (match.Success)
 			{
 				var month = match.Groups["month"];
 				var day = match.Groups["day"];

@@ -47,7 +47,7 @@ namespace OpenPop.Mime.Decode
 		/// <exception cref="ArgumentNullException">If <paramref name="encodedWords"/> is <see langword="null"/></exception>
 		public static string Decode(string encodedWords)
 		{
-			if(encodedWords == null)
+			if (encodedWords == null)
 				throw new ArgumentNullException("encodedWords");
 
 			// Notice that RFC2231 redefines the BNF to
@@ -65,9 +65,9 @@ namespace OpenPop.Mime.Decode
 			// (?<NAME>REGEX) is a named group with name NAME and regular expression REGEX
 
 			// Any amount of linear-space-white between 'encoded-word's,
-            // even if it includes a CRLF followed by one or more SPACEs,
-            // is ignored for the purposes of display.
-            // http://tools.ietf.org/html/rfc2047#page-12
+			// even if it includes a CRLF followed by one or more SPACEs,
+			// is ignored for the purposes of display.
+			// http://tools.ietf.org/html/rfc2047#page-12
 			// Define a regular expression that captures two encoded words with some whitespace between them
 			const string replaceRegex = @"(?<first>" + encodedWordRegex + @")\s+(?<second>" + encodedWordRegex + ")";
 
@@ -100,20 +100,20 @@ namespace OpenPop.Mime.Decode
 				// Encoding may also be written in lowercase
 				switch (encoding.ToUpperInvariant())
 				{
-						// RFC:
-						// The "B" encoding is identical to the "BASE64" 
-						// encoding defined by RFC 2045.
-						// http://tools.ietf.org/html/rfc2045#section-6.8
+					// RFC:
+					// The "B" encoding is identical to the "BASE64" 
+					// encoding defined by RFC 2045.
+					// http://tools.ietf.org/html/rfc2045#section-6.8
 					case "B":
 						decodedText = Base64.Decode(encodedText, charsetEncoding);
 						break;
 
-						// RFC:
-						// The "Q" encoding is similar to the "Quoted-Printable" content-
-						// transfer-encoding defined in RFC 2045.
-						// There are more details to this. Please check
-						// http://tools.ietf.org/html/rfc2047#section-4.2
-						// 
+					// RFC:
+					// The "Q" encoding is similar to the "Quoted-Printable" content-
+					// transfer-encoding defined in RFC 2045.
+					// There are more details to this. Please check
+					// http://tools.ietf.org/html/rfc2047#section-4.2
+					// 
 					case "Q":
 						decodedText = QuotedPrintable.DecodeEncodedWord(encodedText, charsetEncoding);
 						break;

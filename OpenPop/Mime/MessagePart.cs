@@ -1,11 +1,11 @@
-﻿using System;
+﻿using OpenPop.Common;
+using OpenPop.Mime.Decode;
+using OpenPop.Mime.Header;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mime;
 using System.Text;
-using OpenPop.Mime.Decode;
-using OpenPop.Mime.Header;
-using OpenPop.Common;
 
 namespace OpenPop.Mime
 {
@@ -81,9 +81,9 @@ namespace OpenPop.Mime
 	/// </example>
 	public class MessagePart
 	{
-	    private readonly IParsingErrorHandler _parsingErrorHandler;
+		private readonly IParsingErrorHandler _parsingErrorHandler;
 
-	    #region Public properties
+		#region Public properties
 		/// <summary>
 		/// The Content-Type header field.<br/>
 		/// <br/>
@@ -203,23 +203,23 @@ namespace OpenPop.Mime
 
 		#region Constructors
 
-	    /// <summary>
-	    /// Used to construct the topmost message part
-	    /// </summary>
-	    /// <param name="rawBody">The body that needs to be parsed</param>
-	    /// <param name="headers">The headers that should be used from the message</param>
-        /// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
-        /// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
-	    /// <exception cref="ArgumentNullException">If <paramref name="rawBody"/> or <paramref name="headers"/> is <see langword="null"/></exception>
-	    internal MessagePart(byte[] rawBody, MessageHeader headers, IParsingErrorHandler parsingErrorHandler = null)
+		/// <summary>
+		/// Used to construct the topmost message part
+		/// </summary>
+		/// <param name="rawBody">The body that needs to be parsed</param>
+		/// <param name="headers">The headers that should be used from the message</param>
+		/// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
+		/// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
+		/// <exception cref="ArgumentNullException">If <paramref name="rawBody"/> or <paramref name="headers"/> is <see langword="null"/></exception>
+		internal MessagePart(byte[] rawBody, MessageHeader headers, IParsingErrorHandler parsingErrorHandler = null)
 		{
-		    if(rawBody == null)
+			if (rawBody == null)
 				throw new ArgumentNullException("rawBody");
-			
-			if(headers == null)
+
+			if (headers == null)
 				throw new ArgumentNullException("headers");
 
-		    _parsingErrorHandler = parsingErrorHandler;
+			_parsingErrorHandler = parsingErrorHandler;
 
 			ContentType = headers.ContentType;
 			ContentDescription = headers.ContentDescription;
@@ -228,22 +228,22 @@ namespace OpenPop.Mime
 			ContentDisposition = headers.ContentDisposition;
 
 			FileName = FindFileName(ContentType, ContentDisposition, "(no name)");
-		    try
-		    {
-		        BodyEncoding = ParseBodyEncoding(ContentType.CharSet);
-		    }
-		    catch (FormatException ex)
-		    {
-		        BodyEncoding = Encoding.UTF8;
-		        if (_parsingErrorHandler != null)
-		        {
-                    _parsingErrorHandler.HandleParseError(new ParseError(ex, ContentType.CharSet, string.Format("On body encoding. Encoding set to {0}", BodyEncoding.EncodingName)));
-		        }
-		        else
-		        {
-                    throw;
-		        }
-		    }
+			try
+			{
+				BodyEncoding = ParseBodyEncoding(ContentType.CharSet);
+			}
+			catch (FormatException ex)
+			{
+				BodyEncoding = Encoding.UTF8;
+				if (_parsingErrorHandler != null)
+				{
+					_parsingErrorHandler.HandleParseError(new ParseError(ex, ContentType.CharSet, string.Format("On body encoding. Encoding set to {0}", BodyEncoding.EncodingName)));
+				}
+				else
+				{
+					throw;
+				}
+			}
 
 			ParseBody(rawBody);
 		}
@@ -279,7 +279,7 @@ namespace OpenPop.Mime
 		/// <exception cref="ArgumentNullException">if <paramref name="contentType"/> is <see langword="null"/></exception>
 		private static string FindFileName(ContentType contentType, ContentDisposition contentDisposition, string defaultName)
 		{
-			if(contentType == null)
+			if (contentType == null)
 				throw new ArgumentNullException("contentType");
 
 			if (contentDisposition != null && contentDisposition.FileName != null)
@@ -297,11 +297,12 @@ namespace OpenPop.Mime
 		/// <param name="rawBody">The byte array to parse as body of an email message. This array may not contain headers.</param>
 		private void ParseBody(byte[] rawBody)
 		{
-			if(IsMultiPart)
+			if (IsMultiPart)
 			{
 				// Parses a MultiPart message
 				ParseMultiPartBody(rawBody);
-			} else
+			}
+			else
 			{
 				// Parses a non MultiPart message
 				// Decode the body accodingly and set the Body property
@@ -360,7 +361,7 @@ namespace OpenPop.Mime
 		/// <exception cref="ArgumentNullException">If <paramref name="rawBody"/> is <see langword="null"/></exception>
 		private static List<byte[]> GetMultiPartParts(byte[] rawBody, string multipPartBoundary)
 		{
-			if(rawBody == null)
+			if (rawBody == null)
 				throw new ArgumentNullException("rawBody");
 
 			// This is the list we want to return
@@ -378,7 +379,7 @@ namespace OpenPop.Mime
 				while (true)
 				{
 					// When we have just parsed the last multipart entry, stop parsing on
-					if(lastMultipartBoundaryEncountered)
+					if (lastMultipartBoundaryEncountered)
 						break;
 
 					// Find the end location of the current multipart
@@ -391,7 +392,7 @@ namespace OpenPop.Mime
 					if (stopLocation <= -1)
 					{
 						// Include everything except the last CRLF.
-						stopLocation = (int) stream.Length - "\r\n".Length;
+						stopLocation = (int)stream.Length - "\r\n".Length;
 
 						// We consider this as the last part
 						lastMultipartBoundaryEncountered = true;
@@ -404,7 +405,7 @@ namespace OpenPop.Mime
 
 					// Special case: empty part.
 					// skipping by moving start location
-					if(startLocation >= stopLocation)
+					if (startLocation >= stopLocation)
 					{
 						startLocation = stopLocation + ("\r\n" + "--" + multipPartBoundary + "\r\n").Length;
 						continue;
@@ -440,11 +441,11 @@ namespace OpenPop.Mime
 		private static int FindPositionOfNextMultiPartBoundary(Stream stream, string multiPartBoundary, out bool lastMultipartBoundaryFound)
 		{
 			lastMultipartBoundaryFound = false;
-			while(true)
+			while (true)
 			{
 				// Get the current position. This is the first position on the line - no characters of the line will
 				// have been read yet
-				int currentPos = (int) stream.Position;
+				int currentPos = (int)stream.Position;
 
 				// Read the line
 				string line = StreamUtility.ReadLineAsAscii(stream);

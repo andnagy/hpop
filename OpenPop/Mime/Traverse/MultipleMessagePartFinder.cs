@@ -17,7 +17,7 @@ namespace OpenPop.Mime.Traverse
 		/// <exception cref="ArgumentNullException">if <paramref name="leafAnswers"/> is <see langword="null"/></exception>
 		protected override List<MessagePart> MergeLeafAnswers(List<List<MessagePart>> leafAnswers)
 		{
-			if(leafAnswers == null)
+			if (leafAnswers == null)
 				throw new ArgumentNullException("leafAnswers");
 
 			// We simply create a list with all the answer generated from the leaves

@@ -1,10 +1,9 @@
-﻿using System;
+﻿using OpenPop.Common.Logging;
+using OpenPop.Mime.Decode;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Net.Mail;
 using System.Net.Mime;
-using OpenPop.Mime.Decode;
-using OpenPop.Common.Logging;
 
 namespace OpenPop.Mime.Header
 {
@@ -22,7 +21,7 @@ namespace OpenPop.Mime.Header
 		/// <exception cref="ArgumentException">If the <paramref name="headerValue"/> could not be parsed to a <see cref="ContentTransferEncoding"/></exception>
 		public static ContentTransferEncoding ParseContentTransferEncoding(string headerValue)
 		{
-			if(headerValue == null)
+			if (headerValue == null)
 				throw new ArgumentNullException("headerValue");
 
 			switch (headerValue.Trim().ToUpperInvariant())
@@ -59,7 +58,7 @@ namespace OpenPop.Mime.Header
 		/// <exception cref="ArgumentNullException">If <paramref name="headerValue"/> is <see langword="null"/></exception>
 		public static MailPriority ParseImportance(string headerValue)
 		{
-			if(headerValue == null)
+			if (headerValue == null)
 				throw new ArgumentNullException("headerValue");
 
 			switch (headerValue.ToUpperInvariant())
@@ -91,7 +90,7 @@ namespace OpenPop.Mime.Header
 		/// <exception cref="ArgumentNullException">If <paramref name="headerValue"/> is <see langword="null"/></exception>
 		public static ContentType ParseContentType(string headerValue)
 		{
-			if(headerValue == null)
+			if (headerValue == null)
 				throw new ArgumentNullException("headerValue");
 
 			// We create an empty Content-Type which we will fill in when we see the values
@@ -128,7 +127,7 @@ namespace OpenPop.Mime.Header
 							DefaultLogger.Log.LogDebug(
 								"Multiple values without a key in the Content Type header. Only the first will get used as the media type");
 						}
-						
+
 						break;
 
 					case "BOUNDARY":
@@ -146,7 +145,7 @@ namespace OpenPop.Mime.Header
 					default:
 						// This is to shut up the code help that is saying that contentType.Parameters
 						// can be null - which it cant!
-						if(contentType.Parameters == null)
+						if (contentType.Parameters == null)
 							throw new Exception("The ContentType parameters property is null. This will never be thrown.");
 
 						// We add the unknown value to our parameters list
@@ -229,7 +228,7 @@ namespace OpenPop.Mime.Header
 						break;
 
 					default:
-						if(key.StartsWith("X-"))
+						if (key.StartsWith("X-"))
 						{
 							contentDisposition.Parameters.Add(key, value);
 							break;
@@ -288,20 +287,20 @@ namespace OpenPop.Mime.Header
 		private static string cleanMediaType(string mediaType)
 		{
 			//Validation
-			if(mediaType == null)
+			if (mediaType == null)
 			{
 				throw new ArgumentNullException("mediaType");
 			}
 
 			int typeEndIdx = mediaType.IndexOf('/');
-			if(typeEndIdx == -1)
+			if (typeEndIdx == -1)
 			{
 				throw new ArgumentException("Media Type must be in the format type \"/\" subtype", "mediaType");
 			}
 
-			if(typeEndIdx == mediaType.Length - 1)
+			if (typeEndIdx == mediaType.Length - 1)
 			{
-				throw new ArgumentException("Media Type must contain subtype, which is a madatory field and has no default", 
+				throw new ArgumentException("Media Type must contain subtype, which is a madatory field and has no default",
 					"mediaType");
 			}
 
@@ -321,7 +320,7 @@ namespace OpenPop.Mime.Header
 			string toRet = type + "/" + subType;
 
 			//Log a debug message if the media type has been changed
-			if(toRet != mediaType)
+			if (toRet != mediaType)
 			{
 				DefaultLogger.Log.LogDebug("Content-Type Media Type value has been changed since it was invalid. Original value \"" +
 					mediaType + "\". New Value \"" + toRet + "\"");
@@ -338,15 +337,15 @@ namespace OpenPop.Mime.Header
 		private static string stripRfc2045TSpecials(string s)
 		{
 			//Validation
-			if(s == null)
+			if (s == null)
 			{
 				throw new ArgumentNullException("s");
 			}
 
-			string[] tSpecials = new string[] { "(", ")", "<", ">", "@", ",", ";", 
+			string[] tSpecials = new string[] { "(", ")", "<", ">", "@", ",", ";",
 				":", "\\", "\"", "/", "[", "]", "?", "=" };
 
-			foreach(string tSpecial in tSpecials)
+			foreach (string tSpecial in tSpecials)
 			{
 				s = s.Replace(tSpecial, "");
 			}
@@ -361,13 +360,13 @@ namespace OpenPop.Mime.Header
 		private static string stripRfc822Ctls(string s)
 		{
 			//Validation
-			if(s == null)
+			if (s == null)
 			{
 				throw new ArgumentNullException("s");
 			}
 
 			//ASCII Control Chars
-			for(int i = 0; i <= 31; i++)
+			for (int i = 0; i <= 31; i++)
 			{
 				char c = (char)i;
 				s = s.Replace(c.ToString(), "");

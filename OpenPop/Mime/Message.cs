@@ -1,10 +1,10 @@
+using OpenPop.Mime.Header;
+using OpenPop.Mime.Traverse;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
 using System.Text;
-using OpenPop.Mime.Header;
-using OpenPop.Mime.Traverse;
 
 namespace OpenPop.Mime
 {
@@ -51,32 +51,32 @@ namespace OpenPop.Mime
 
 		#region Constructors
 
-	    /// <summary>
-	    /// Convenience constructor for <see cref="Mime.Message(byte[], bool, IParsingErrorHandler)"/>.<br/>
-	    /// <br/>
-	    /// Creates a message from a byte array. The full message including its body is parsed.
-	    /// </summary>
-	    /// <param name="rawMessageContent">The byte array which is the message contents to parse</param>
-        /// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
-        /// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
-	    public Message(byte[] rawMessageContent, IParsingErrorHandler parsingErrorHandler = null)
+		/// <summary>
+		/// Convenience constructor for <see cref="Mime.Message(byte[], bool, IParsingErrorHandler)"/>.<br/>
+		/// <br/>
+		/// Creates a message from a byte array. The full message including its body is parsed.
+		/// </summary>
+		/// <param name="rawMessageContent">The byte array which is the message contents to parse</param>
+		/// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
+		/// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
+		public Message(byte[] rawMessageContent, IParsingErrorHandler parsingErrorHandler = null)
 			: this(rawMessageContent, true, parsingErrorHandler)
 		{
 		}
 
-	    /// <summary>
-	    /// Constructs a message from a byte array.<br/>
-	    /// <br/>
-	    /// The headers are always parsed, but if <paramref name="parseBody"/> is <see langword="false"/>, the body is not parsed.
-	    /// </summary>
-	    /// <param name="rawMessageContent">The byte array which is the message contents to parse</param>
-	    /// <param name="parseBody">
-	    /// <see langword="true"/> if the body should be parsed,
-	    /// <see langword="false"/> if only headers should be parsed out of the <paramref name="rawMessageContent"/> byte array
-	    /// </param>
-        /// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
-        /// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
-	    public Message(byte[] rawMessageContent, bool parseBody, IParsingErrorHandler parsingErrorHandler = null)
+		/// <summary>
+		/// Constructs a message from a byte array.<br/>
+		/// <br/>
+		/// The headers are always parsed, but if <paramref name="parseBody"/> is <see langword="false"/>, the body is not parsed.
+		/// </summary>
+		/// <param name="rawMessageContent">The byte array which is the message contents to parse</param>
+		/// <param name="parseBody">
+		/// <see langword="true"/> if the body should be parsed,
+		/// <see langword="false"/> if only headers should be parsed out of the <paramref name="rawMessageContent"/> byte array
+		/// </param>
+		/// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
+		/// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
+		public Message(byte[] rawMessageContent, bool parseBody, IParsingErrorHandler parsingErrorHandler = null)
 		{
 			RawMessage = rawMessageContent;
 
@@ -137,10 +137,10 @@ namespace OpenPop.Mime
 			// But since we know that strings in .NET is stored in UTF, we can
 			// use UTF-8 to decode the subject into bytes
 			message.SubjectEncoding = Encoding.UTF8;
-			
+
 			// The HTML version should take precedent over the plain text if it is available
 			MessagePart preferredVersion = FindFirstHtmlVersion();
-			if ( preferredVersion != null )
+			if (preferredVersion != null)
 			{
 				// Make sure that the IsBodyHtml property is being set correctly for our content
 				message.IsBodyHtml = true;
@@ -183,22 +183,22 @@ namespace OpenPop.Mime
 
 				attachment.Name = String.IsNullOrEmpty(attachment.Name) ? attachmentMessagePart.FileName : attachment.Name;
 				attachment.ContentDisposition.FileName = String.IsNullOrEmpty(attachment.ContentDisposition.FileName) ? attachmentMessagePart.FileName : attachment.ContentDisposition.FileName;
-				
+
 				message.Attachments.Add(attachment);
 			}
 
-			if(Headers.From != null && Headers.From.HasValidMailAddress)
+			if (Headers.From != null && Headers.From.HasValidMailAddress)
 				message.From = Headers.From.MailAddress;
 
 			if (Headers.ReplyTo != null && Headers.ReplyTo.HasValidMailAddress)
 				message.ReplyTo = Headers.ReplyTo.MailAddress;
 
-			if(Headers.Sender != null && Headers.Sender.HasValidMailAddress)
+			if (Headers.Sender != null && Headers.Sender.HasValidMailAddress)
 				message.Sender = Headers.Sender.MailAddress;
 
 			foreach (RfcMailAddress to in Headers.To)
 			{
-				if(to.HasValidMailAddress)
+				if (to.HasValidMailAddress)
 					message.To.Add(to.MailAddress);
 			}
 
@@ -344,17 +344,17 @@ namespace OpenPop.Mime
 			messageStream.Write(RawMessage, 0, RawMessage.Length);
 		}
 
-	    /// <summary>
-	    /// Loads a <see cref="Message"/> from a file containing a raw email.
-	    /// </summary>
-	    /// <param name="file">The File location to load the <see cref="Message"/> from. The file must exist.</param>
-        /// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
-        /// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
-	    /// <exception cref="ArgumentNullException">If <paramref name="file"/> is <see langword="null"/></exception>
-	    /// <exception cref="FileNotFoundException">If <paramref name="file"/> does not exist</exception>
-	    /// <exception>Other exceptions relevant to a <see cref="FileStream"/> might be thrown as well</exception>
-	    /// <returns>A <see cref="Message"/> with the content loaded from the <paramref name="file"/></returns>
-	    public static Message Load(FileInfo file, IParsingErrorHandler parsingErrorHandler = null)
+		/// <summary>
+		/// Loads a <see cref="Message"/> from a file containing a raw email.
+		/// </summary>
+		/// <param name="file">The File location to load the <see cref="Message"/> from. The file must exist.</param>
+		/// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
+		/// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
+		/// <exception cref="ArgumentNullException">If <paramref name="file"/> is <see langword="null"/></exception>
+		/// <exception cref="FileNotFoundException">If <paramref name="file"/> does not exist</exception>
+		/// <exception>Other exceptions relevant to a <see cref="FileStream"/> might be thrown as well</exception>
+		/// <returns>A <see cref="Message"/> with the content loaded from the <paramref name="file"/></returns>
+		public static Message Load(FileInfo file, IParsingErrorHandler parsingErrorHandler = null)
 		{
 			if (file == null)
 				throw new ArgumentNullException("file");
@@ -369,16 +369,16 @@ namespace OpenPop.Mime
 		}
 
 
-	    /// <summary>
-	    /// Loads a <see cref="Message"/> from a <see cref="Stream"/> containing a raw email.
-	    /// </summary>
-	    /// <param name="messageStream">The <see cref="Stream"/> from which to load the raw <see cref="Message"/></param>
-        /// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
-        /// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
-	    /// <exception cref="ArgumentNullException">If <paramref name="messageStream"/> is <see langword="null"/></exception>
-	    /// <exception>Other exceptions relevant to <see cref="Stream.Read"/> might be thrown as well</exception>
-	    /// <returns>A <see cref="Message"/> with the content loaded from the <paramref name="messageStream"/></returns>
-	    public static Message Load(Stream messageStream, IParsingErrorHandler parsingErrorHandler = null)
+		/// <summary>
+		/// Loads a <see cref="Message"/> from a <see cref="Stream"/> containing a raw email.
+		/// </summary>
+		/// <param name="messageStream">The <see cref="Stream"/> from which to load the raw <see cref="Message"/></param>
+		/// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing something in the message. 
+		/// If it is not null, the handler handles the error on the specific element without stopping the message parsing process</param>
+		/// <exception cref="ArgumentNullException">If <paramref name="messageStream"/> is <see langword="null"/></exception>
+		/// <exception>Other exceptions relevant to <see cref="Stream.Read"/> might be thrown as well</exception>
+		/// <returns>A <see cref="Message"/> with the content loaded from the <paramref name="messageStream"/></returns>
+		public static Message Load(Stream messageStream, IParsingErrorHandler parsingErrorHandler = null)
 		{
 			if (messageStream == null)
 				throw new ArgumentNullException("messageStream");

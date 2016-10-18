@@ -1,7 +1,7 @@
-﻿using System;
+﻿using OpenPop.Mime.Decode;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using OpenPop.Mime.Decode;
 
 namespace OpenPop.Mime.Header
 {
@@ -61,13 +61,13 @@ namespace OpenPop.Mime.Header
 
 			// The date part is the last part of the string, and is preceeded by a semicolon
 			// Some emails forgets to specify the date, therefore we need to check if it is there
-			if(headerValue.Contains(";"))
+			if (headerValue.Contains(";"))
 			{
 				string datePart = headerValue.Substring(headerValue.LastIndexOf(";") + 1);
 				Date = Rfc2822DateTime.StringToDate(datePart);
 			}
 
-			Names = ParseDictionary(headerValue);	
+			Names = ParseDictionary(headerValue);
 		}
 
 		/// <summary>
@@ -120,7 +120,7 @@ namespace OpenPop.Mime.Header
 
 				// Only add the first name pair
 				// All subsequent pairs are ignored, as they are invalid anyway
-				if(!dictionary.ContainsKey(name))
+				if (!dictionary.ContainsKey(name))
 					dictionary.Add(name, value);
 			}
 

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using OpenPop.Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using OpenPop.Common.Logging;
 
 namespace OpenPop.Mime.Decode
 {
@@ -72,13 +72,13 @@ namespace OpenPop.Mime.Decode
 		/// <exception cref="ArgumentNullException">If <paramref name="toDecode"/> is <see langword="null"/></exception>
 		public static List<KeyValuePair<string, string>> Decode(string toDecode)
 		{
-			if(toDecode == null)
+			if (toDecode == null)
 				throw new ArgumentNullException("toDecode");
 
 			// Normalize the input to take account for missing semicolons after parameters.
 			// Example
 			// text/plain; charset=\"iso-8859-1\" name=\"somefile.txt\" or
-            // text/plain;\tcharset=\"iso-8859-1\"\tname=\"somefile.txt\"
+			// text/plain;\tcharset=\"iso-8859-1\"\tname=\"somefile.txt\"
 			// is normalized to
 			// text/plain; charset=\"iso-8859-1\"; name=\"somefile.txt\"
 			// Only works for parameters inside quotes
@@ -106,14 +106,16 @@ namespace OpenPop.Mime.Decode
 				if (part.Trim().Length == 0)
 					continue;
 
-				string[] keyValue = part.Trim().Split(new [] {'='}, 2);
-				if(keyValue.Length == 1)
+				string[] keyValue = part.Trim().Split(new[] { '=' }, 2);
+				if (keyValue.Length == 1)
 				{
 					collection.Add(new KeyValuePair<string, string>("", keyValue[0]));
-				} else if (keyValue.Length == 2)
+				}
+				else if (keyValue.Length == 2)
 				{
 					collection.Add(new KeyValuePair<string, string>(keyValue[0], keyValue[1]));
-				} else
+				}
+				else
 				{
 					throw new ArgumentException("When splitting the part \"" + part + "\" by = there was " + keyValue.Length + " parts. Only 1 and 2 are supported");
 				}
@@ -131,20 +133,20 @@ namespace OpenPop.Mime.Decode
 		/// <returns>A decoded list of pairs</returns>
 		private static List<KeyValuePair<string, string>> DecodePairs(List<KeyValuePair<string, string>> pairs)
 		{
-			if(pairs == null)
+			if (pairs == null)
 				throw new ArgumentNullException("pairs");
 
 			List<KeyValuePair<string, string>> resultPairs = new List<KeyValuePair<string, string>>(pairs.Count);
 
 			int pairsCount = pairs.Count;
-			for(int i = 0; i<pairsCount; i++)
+			for (int i = 0; i < pairsCount; i++)
 			{
 				KeyValuePair<string, string> currentPair = pairs[i];
 				string key = currentPair.Key;
 				string value = Utility.RemoveQuotesIfAny(currentPair.Value);
 
 				// Is it a continuation parameter? (encoded or not)
-				if(key.EndsWith("*0", StringComparison.OrdinalIgnoreCase) || key.EndsWith("*0*", StringComparison.OrdinalIgnoreCase))
+				if (key.EndsWith("*0", StringComparison.OrdinalIgnoreCase) || key.EndsWith("*0*", StringComparison.OrdinalIgnoreCase))
 				{
 					// This encoding will not be used if we get into the if which tells us
 					// that the whole continuation is not encoded
@@ -155,7 +157,7 @@ namespace OpenPop.Mime.Decode
 					if (key.EndsWith("*0*", StringComparison.OrdinalIgnoreCase))
 					{
 						// It is encoded.
-						
+
 						// Fetch out the encoding for later use and decode the value
 						// If the value was not encoded as the email specified
 						// encoding will be set to null. This will be used later.
@@ -165,7 +167,8 @@ namespace OpenPop.Mime.Decode
 						// Remove the start *0 which tells is it is a continuation, and the first one
 						// And remove the * afterwards which tells us it is encoded
 						key = key.Replace("*0*", "");
-					} else
+					}
+					else
 					{
 						// It is not encoded, and no parts of the continuation is encoded either
 
@@ -241,7 +244,8 @@ namespace OpenPop.Mime.Decode
 
 					// Now input the new value with the new key
 					resultPairs.Add(new KeyValuePair<string, string>(key, value));
-				} else
+				}
+				else
 				{
 					// Fully normal key - the value is not encoded
 					// Therefore nothing to do, and we can simply pass the pair
@@ -273,7 +277,7 @@ namespace OpenPop.Mime.Decode
 		/// <exception cref="ArgumentNullException">If <paramref name="toDecode"/> is <see langword="null"/></exception>
 		private static string DecodeSingleValue(string toDecode, out string encodingUsed)
 		{
-			if(toDecode == null)
+			if (toDecode == null)
 				throw new ArgumentNullException("toDecode");
 
 			// Check if input has a part describing the encoding
@@ -300,10 +304,10 @@ namespace OpenPop.Mime.Decode
 		/// <exception cref="ArgumentNullException">If <paramref name="encoding"/> is <see langword="null"/></exception>
 		private static string DecodeSingleValue(string valueToDecode, string encoding)
 		{
-			if(valueToDecode == null)
+			if (valueToDecode == null)
 				throw new ArgumentNullException("valueToDecode");
 
-			if(encoding == null)
+			if (encoding == null)
 				throw new ArgumentNullException("encoding");
 
 			// The encoding used is the same as QuotedPrintable, we only

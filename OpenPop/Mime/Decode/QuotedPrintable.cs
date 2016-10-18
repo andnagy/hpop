@@ -95,7 +95,8 @@ namespace OpenPop.Mime.Decode
 
 						// We now consumed two extra characters. Go forward two extra characters
 						i += 2;
-					} else
+					}
+					else
 					{
 						// This character is not quoted printable hex encoded.
 
@@ -146,7 +147,7 @@ namespace OpenPop.Mime.Decode
 		/// <exception cref="ArgumentNullException">If <paramref name="input"/> is <see langword="null"/></exception>
 		private static string RemoveIllegalControlCharacters(string input)
 		{
-			if(input == null)
+			if (input == null)
 				throw new ArgumentNullException("input");
 
 			// First we remove any \r or \n which is not part of a \r\n pair
@@ -188,10 +189,12 @@ namespace OpenPop.Mime.Decode
 					// Check for lonely \n
 					// There is a lonely \n if \n is the first character or if there
 					// is no \r in front of it
-				} else if (input[i] == '\n' && (i - 1 < 0 || input[i - 1] != '\r'))
+				}
+				else if (input[i] == '\n' && (i - 1 < 0 || input[i - 1] != '\r'))
 				{
 					// Illegal token \n found. Do not add it to the new string
-				} else
+				}
+				else
 				{
 					// No illegal tokens found. Simply insert the character we are at
 					// in our new string
@@ -237,7 +240,7 @@ namespace OpenPop.Mime.Decode
 			if (decode.Length >= 3)
 				throw new ArgumentException("decode must have length lower than 3", "decode");
 
-			if(decode.Length <= 0)
+			if (decode.Length <= 0)
 				throw new ArgumentException("decode must have length lower at least 1", "decode");
 
 			// First char must be =
@@ -280,7 +283,7 @@ namespace OpenPop.Mime.Decode
 			{
 				// Soft break detected
 				// We want to return string.Empty which is equivalent to a zero-length byte array
-				return new byte[0]; 
+				return new byte[0];
 			}
 
 			// Hex string detected. Convertion needed.
@@ -299,7 +302,8 @@ namespace OpenPop.Mime.Decode
 
 				// Simply return our one byte byte array
 				return oneByte;
-			} catch (FormatException)
+			}
+			catch (FormatException)
 			{
 				// RFC 2045 says about robust implementation:
 				// An "=" followed by a character that is neither a

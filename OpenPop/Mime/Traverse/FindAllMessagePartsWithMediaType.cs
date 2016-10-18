@@ -22,7 +22,7 @@ namespace OpenPop.Mime.Traverse
 		/// </returns>
 		public List<MessagePart> VisitMessage(Message message, string question)
 		{
-			if(message == null)
+			if (message == null)
 				throw new ArgumentNullException("message");
 
 			return VisitMessagePart(message.MessagePart, question);
@@ -42,7 +42,7 @@ namespace OpenPop.Mime.Traverse
 		/// </returns>
 		public List<MessagePart> VisitMessagePart(MessagePart messagePart, string question)
 		{
-			if(messagePart == null)
+			if (messagePart == null)
 				throw new ArgumentNullException("messagePart");
 
 			List<MessagePart> results = new List<MessagePart>();

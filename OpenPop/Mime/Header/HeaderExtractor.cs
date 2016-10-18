@@ -1,9 +1,9 @@
-﻿using System;
+﻿using OpenPop.Common;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
-using OpenPop.Common;
 
 namespace OpenPop.Mime.Header
 {
@@ -22,7 +22,7 @@ namespace OpenPop.Mime.Header
 		/// <exception cref="ArgumentNullException">If <paramref name="messageContent"/> is <see langword="null"/></exception>
 		private static int FindHeaderEndPosition(byte[] messageContent)
 		{
-			if(messageContent == null)
+			if (messageContent == null)
 				throw new ArgumentNullException("messageContent");
 
 			// Convert the byte array into a stream
@@ -43,19 +43,19 @@ namespace OpenPop.Mime.Header
 			}
 		}
 
-	    /// <summary>
-	    /// Extract the header part and body part of a message.<br/>
-	    /// The headers are then parsed to a strongly typed <see cref="MessageHeader"/> object.
-	    /// </summary>
-	    /// <param name="fullRawMessage">The full message in bytes where header and body needs to be extracted from</param>
-	    /// <param name="headers">The extracted header parts of the message</param>
-	    /// <param name="body">The body part of the message</param>
-        /// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing an header. 
-        /// If it is not null, the handler handles the error on the specific header without stopping the message parsing process</param>
-	    /// <exception cref="ArgumentNullException">If <paramref name="fullRawMessage"/> is <see langword="null"/></exception>
-	    public static void ExtractHeadersAndBody(byte[] fullRawMessage, out MessageHeader headers, out byte[] body, IParsingErrorHandler parsingErrorHandler = null)
+		/// <summary>
+		/// Extract the header part and body part of a message.<br/>
+		/// The headers are then parsed to a strongly typed <see cref="MessageHeader"/> object.
+		/// </summary>
+		/// <param name="fullRawMessage">The full message in bytes where header and body needs to be extracted from</param>
+		/// <param name="headers">The extracted header parts of the message</param>
+		/// <param name="body">The body part of the message</param>
+		/// <param name="parsingErrorHandler">(Optional) It is notifified when an error occurs while parsing an header. 
+		/// If it is not null, the handler handles the error on the specific header without stopping the message parsing process</param>
+		/// <exception cref="ArgumentNullException">If <paramref name="fullRawMessage"/> is <see langword="null"/></exception>
+		public static void ExtractHeadersAndBody(byte[] fullRawMessage, out MessageHeader headers, out byte[] body, IParsingErrorHandler parsingErrorHandler = null)
 		{
-			if(fullRawMessage == null)
+			if (fullRawMessage == null)
 				throw new ArgumentNullException("fullRawMessage");
 
 			// Find the end location of the headers
@@ -85,7 +85,7 @@ namespace OpenPop.Mime.Header
 		/// <exception cref="ArgumentNullException">If <paramref name="messageContent"/> is <see langword="null"/></exception>
 		public static NameValueCollection ExtractHeaders(string messageContent)
 		{
-			if(messageContent == null)
+			if (messageContent == null)
 				throw new ArgumentNullException("messageContent");
 
 			NameValueCollection headers = new NameValueCollection();

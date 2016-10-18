@@ -24,10 +24,10 @@ namespace OpenPop.Pop3.Exceptions
 		protected PopClientException(string message, Exception innerException)
 			: base(message, innerException)
 		{
-			if(message == null)
+			if (message == null)
 				throw new ArgumentNullException("message");
 
-			if(innerException == null)
+			if (innerException == null)
 				throw new ArgumentNullException("innerException");
 		}
 

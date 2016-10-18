@@ -14,7 +14,7 @@ namespace OpenPop.Common.Logging
 		/// <param name="message">This is the error message to log</param>
 		public void LogError(string message)
 		{
-			if(message == null)
+			if (message == null)
 				throw new ArgumentNullException("message");
 
 			System.Diagnostics.Trace.WriteLine("OpenPOP: " + message);

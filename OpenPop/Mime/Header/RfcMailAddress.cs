@@ -1,8 +1,8 @@
-﻿using System;
+﻿using OpenPop.Common.Logging;
+using OpenPop.Mime.Decode;
+using System;
 using System.Collections.Generic;
 using System.Net.Mail;
-using OpenPop.Mime.Decode;
-using OpenPop.Common.Logging;
 
 namespace OpenPop.Mime.Header
 {
@@ -87,7 +87,7 @@ namespace OpenPop.Mime.Header
 			if (mailAddress == null)
 				throw new ArgumentNullException("mailAddress");
 
-			if(raw == null)
+			if (raw == null)
 				throw new ArgumentNullException("raw");
 
 			MailAddress = mailAddress;
@@ -104,7 +104,7 @@ namespace OpenPop.Mime.Header
 		/// <exception cref="ArgumentNullException">If <paramref name="raw"/> is <see langword="null"/></exception>
 		private RfcMailAddress(string raw)
 		{
-			if(raw == null)
+			if (raw == null)
 				throw new ArgumentNullException("raw");
 
 			MailAddress = null;
@@ -171,7 +171,7 @@ namespace OpenPop.Mime.Header
 			}
 
 			//If the email address in the input string is enclosed in multiple angle brackets
-			if(firstOpenAngleBracketIdx != lastOpenAngleBracketIdx)
+			if (firstOpenAngleBracketIdx != lastOpenAngleBracketIdx)
 			{
 				//Remove the multiple angle brackets surrounding the email address from the input string leaving just a single set
 				input = input.Substring(0, firstOpenAngleBracketIdx) + //Part before any angle brackets (display name if there is one)
@@ -214,7 +214,7 @@ namespace OpenPop.Mime.Header
 
 				// This might be on the form noreply@mail.eksperten.dk
 				// Check if there is an email, if notm there is no need to try
-				if(input.Contains("@"))
+				if (input.Contains("@"))
 					return new RfcMailAddress(new MailAddress(input), input);
 			}
 			catch (FormatException)

@@ -31,7 +31,7 @@ namespace OpenPop.Common.Logging
 		/// </exception>
 		public static void SetLog(ILog newLogger)
 		{
-			if(newLogger == null)
+			if (newLogger == null)
 				throw new ArgumentNullException("newLogger");
 			Log = newLogger;
 		}

@@ -19,7 +19,7 @@ namespace OpenPop.Common
 		/// <exception cref="ArgumentNullException">If <paramref name="stream"/> is <see langword="null"/></exception>
 		public static byte[] ReadLineAsBytes(Stream stream)
 		{
-			if(stream == null)
+			if (stream == null)
 				throw new ArgumentNullException("stream");
 
 			using (MemoryStream memoryStream = new MemoryStream())

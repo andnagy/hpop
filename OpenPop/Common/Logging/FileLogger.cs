@@ -23,7 +23,7 @@ namespace OpenPop.Common.Logging
 			LogFile = new FileInfo("OpenPOP.log");
 			Enabled = true;
 			Verbose = false;
-			LogLock =  new object();
+			LogLock = new object();
 		}
 
 		/// <summary>

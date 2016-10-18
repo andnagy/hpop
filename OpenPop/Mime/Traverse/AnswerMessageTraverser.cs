@@ -18,7 +18,7 @@ namespace OpenPop.Mime.Traverse
 		/// <exception cref="ArgumentNullException">if <paramref name="message"/> is <see langword="null"/></exception>
 		public TAnswer VisitMessage(Message message)
 		{
-			if(message == null)
+			if (message == null)
 				throw new ArgumentNullException("message");
 
 			return VisitMessagePart(message.MessagePart);
@@ -32,10 +32,10 @@ namespace OpenPop.Mime.Traverse
 		/// <exception cref="ArgumentNullException">if <paramref name="messagePart"/> is <see langword="null"/></exception>
 		public TAnswer VisitMessagePart(MessagePart messagePart)
 		{
-			if(messagePart == null)
+			if (messagePart == null)
 				throw new ArgumentNullException("messagePart");
 
-			if(messagePart.IsMultiPart)
+			if (messagePart.IsMultiPart)
 			{
 				List<TAnswer> leafAnswers = new List<TAnswer>(messagePart.MessageParts.Count);
 				foreach (MessagePart part in messagePart.MessageParts)

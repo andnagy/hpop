@@ -144,7 +144,7 @@ namespace OpenPop.Mime.Decode
 			if (characterSet == null)
 				throw new ArgumentNullException("characterSet");
 
-			if(encoding == null)
+			if (encoding == null)
 				throw new ArgumentNullException("encoding");
 
 			// Add the mapping using uppercase

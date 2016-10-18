@@ -16,11 +16,11 @@ namespace OpenPop.Mime.Decode
 		/// <exception cref="ArgumentNullException">If <paramref name="text"/> is <see langword="null"/></exception>
 		public static string RemoveQuotesIfAny(string text)
 		{
-			if(text == null)
+			if (text == null)
 				throw new ArgumentNullException("text");
 
 			// Check if there are quotes at both ends and have at least two characters
-			if(text.Length > 1 && text[0] == '"' && text[text.Length-1] == '"')
+			if (text.Length > 1 && text[0] == '"' && text[text.Length - 1] == '"')
 			{
 				// Remove quotes at both ends
 				return text.Substring(1, text.Length - 2);

@@ -15,7 +15,7 @@ namespace OpenPop.Mime.Traverse
 		/// <returns>A <see cref="MessagePart"/> with the given MediaType or <see langword="null"/> if no such <see cref="MessagePart"/> was found</returns>
 		public MessagePart VisitMessage(Message message, string question)
 		{
-			if(message == null)
+			if (message == null)
 				throw new ArgumentNullException("message");
 
 			return VisitMessagePart(message.MessagePart, question);
@@ -29,13 +29,13 @@ namespace OpenPop.Mime.Traverse
 		/// <returns>A <see cref="MessagePart"/> with the given MediaType or <see langword="null"/> if no such <see cref="MessagePart"/> was found</returns>
 		public MessagePart VisitMessagePart(MessagePart messagePart, string question)
 		{
-			if(messagePart == null)
+			if (messagePart == null)
 				throw new ArgumentNullException("messagePart");
 
 			if (messagePart.ContentType.MediaType.Equals(question, StringComparison.OrdinalIgnoreCase))
 				return messagePart;
 
-			if(messagePart.IsMultiPart)
+			if (messagePart.IsMultiPart)
 			{
 				foreach (MessagePart part in messagePart.MessageParts)
 				{

@@ -31,7 +31,8 @@ namespace OpenPop.Pop3
 				try
 				{
 					Dispose(true);
-				} finally
+				}
+				finally
 				{
 					IsDisposed = true;
 					GC.SuppressFinalize(this);

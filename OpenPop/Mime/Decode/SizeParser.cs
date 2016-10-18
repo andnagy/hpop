@@ -16,7 +16,7 @@ namespace OpenPop.Mime.Decode
 		private static Dictionary<string, long> InitializeSizes()
 		{
 			return new Dictionary<string, long>
-			{ 
+			{
 				{ "", 1L },  // No unit is the same as a byte
 				{ "B", 1L }, // Byte
 				{ "KB", 1024L }, // Kilobyte
